@@ -6,6 +6,7 @@ from server.api import api_router
 import server.features.user.models  # noqa: F401
 import server.features.dancer.models  # noqa: F401
 import server.features.studio.models  # noqa: F401
+import server.features.dance_class.models  # noqa: F401
 
 app = FastAPI()
 

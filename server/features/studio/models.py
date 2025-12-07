@@ -3,10 +3,11 @@ from server.database.common import Base
 from sqlalchemy import String, BigInteger, Time, Boolean, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import time
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, List, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from server.features.user.models import User
+    from server.features.dance_class.models import Class
 
 import uuid
 
@@ -39,3 +40,11 @@ class Studio(Base):
 
     # User와의 관계
     user: Mapped[Optional["User"]] = relationship("User", back_populates="studio", lazy="selectin")
+
+    # Class와의 관계 (one-to-many)
+    classes: Mapped[List["Class"]] = relationship(
+        "Class",
+        back_populates="studio",
+        lazy="selectin",
+        cascade="all, delete-orphan"
+    )

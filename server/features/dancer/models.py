@@ -6,6 +6,7 @@ from typing import List, Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from server.features.user.models import User
+    from server.features.dance_class.models import Class
 
 import uuid
 import enum
@@ -51,3 +52,11 @@ class Dancer(Base):
 
     # User와의 관계
     user: Mapped[Optional["User"]] = relationship("User", back_populates="dancer", lazy="selectin")
+
+    # Class와의 관계 (many-to-many)
+    classes: Mapped[List["Class"]] = relationship(
+        "Class",
+        secondary="class_dancer_association",
+        back_populates="dancers",
+        lazy="selectin"
+    )

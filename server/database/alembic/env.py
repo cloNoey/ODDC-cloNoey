@@ -13,6 +13,7 @@ from server.database.settings import DB_SETTINGS
 import server.features.user.models
 import server.features.dancer.models
 import server.features.studio.models
+import server.features.dance_class.models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
