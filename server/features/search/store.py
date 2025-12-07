@@ -10,22 +10,21 @@ class SearchStore:
     def __init__(self) -> None:
         self.session = SESSION
 
-    async def search(self, keyword: str) -> Tuple[List[Studio], List[Dancer]]:
-        """스튜디오와 댄서를 검색 (전방 일치)"""
-        # 스튜디오 검색
-        studio_result = await self.session.scalars(
-            select(Studio)
+    async def search(self, keyword: str) -> List[Tuple[str, str, str]]:
+        """스튜디오와 댄서를 검색 (ID, 이름, type만 반환)"""
+        # 스튜디오: ID, name만 SELECT
+        studio_result = await self.session.execute(
+            select(Studio.studio_id, Studio.name)
             .where(Studio.name.like(f"{keyword}%"))
-            .execution_options(populate_existing=True)
         )
-        studios = list(studio_result.all())
+        studios = [(row.studio_id, row.name, "STUDIO") for row in studio_result.all()]
 
-        # 댄서 검색 (main_name으로 검색)
-        dancer_result = await self.session.scalars(
-            select(Dancer)
+        # 댄서: ID, main_name만 SELECT
+        dancer_result = await self.session.execute(
+            select(Dancer.dancer_id, Dancer.main_name)
             .where(Dancer.main_name.like(f"{keyword}%"))
-            .execution_options(populate_existing=True)
         )
-        dancers = list(dancer_result.all())
+        dancers = [(row.dancer_id, row.main_name, "DANCER") for row in dancer_result.all()]
 
-        return studios, dancers
+        # 통합 반환
+        return studios + dancers
