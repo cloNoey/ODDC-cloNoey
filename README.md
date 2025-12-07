@@ -4,6 +4,8 @@ One Day Dance Class
 ## 기획 보드 - FigJam
 https://www.figma.com/board/0Bq3BpTmPUrLPhSh4kJWqg/ODDC_NAVER?node-id=0-1&t=Q0OY9hKJQGysWOa3-1
 
+## FE - Page Design - Figma
+https://www.figma.com/design/W5U425M3b6sDZGUxp9g5rW/ODDC_MVP?node-id=0-1&t=SoTGhm3ApsqrxkNh-1
 
 ## Tech Stack
 ### Frontend (Web & Admin)
