@@ -1,0 +1,43 @@
+import { useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import searchIcon from "@/assets/icons/search_icon.svg";
+
+interface SearchBarProps {
+  className?: string;
+}
+
+/**
+ * SearchBar 컴포넌트
+ * 클릭 시 검색 페이지로 이동하는 버튼
+ * 다른 페이지에서도 재사용 가능
+ */
+export default function SearchBar({ className }: SearchBarProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/search");
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      className={cn(
+        "w-[320px] h-[40px] rounded-[20px]",
+        "bg-[#E6E6FA] flex items-center justify-center",
+        "relative cursor-pointer",
+        className
+      )}
+      aria-label="검색 페이지로 이동"
+    >
+      {/* 중앙 텍스트 */}
+      <span className="text-[12px] text-[#0C1A58] absolute left-1/2 transform -translate-x-1/2">
+        어떤 클래스를 찾고 있나요?
+      </span>
+
+      {/* 우측 검색 아이콘 */}
+      <div className="absolute right-4 w-[22px] h-[22px] flex items-center justify-center">
+        <img src={searchIcon} alt="검색" className="w-full h-full" />
+      </div>
+    </button>
+  );
+}
