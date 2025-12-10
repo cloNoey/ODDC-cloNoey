@@ -33,11 +33,9 @@ export default function StudioCard({
     >
       {/* 근처역 - 위쪽, 우측 정렬, 8px */}
       {studio.nearby_station && (
-        <div className="flex items-center justify-end gap-1">
+        <div className="flex items-center justify-end">
           <img src={locationIcon} alt="위치" className="w-2 h-2" />
-          <p className="text-[8px] text-gray-600">
-            {studio.nearby_station}
-          </p>
+          <p className="text-[8px] text-gray-600">{studio.nearby_station}</p>
         </div>
       )}
 

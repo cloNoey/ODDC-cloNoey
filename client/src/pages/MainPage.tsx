@@ -18,7 +18,7 @@ export default function MainPage() {
   return (
     <div className="relative min-h-screen px-8 pb-8">
       {/* Logo - Y: 177px */}
-      <div style={{ marginTop: "177px" }}>
+      <div style={{ marginTop: "100px" }}>
         <Logo />
       </div>
 
