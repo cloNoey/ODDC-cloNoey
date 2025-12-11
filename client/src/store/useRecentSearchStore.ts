@@ -50,7 +50,7 @@ export const useRecentSearchStore = create<RecentSearchState>()(
         }),
 
       clearRecentSearches: (type) =>
-        set((state) => {
+        set(() => {
           if (!type) {
             return { recentDancers: [], recentStudios: [] };
           }

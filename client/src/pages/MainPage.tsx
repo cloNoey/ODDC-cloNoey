@@ -5,7 +5,8 @@ import {
   StudioCardGrid,
   StudioMapView,
 } from "@/components/main";
-import { mockStudios } from "@/data";
+import { Calendar } from "@/components/calendar";
+import { mockStudios, mockClasses } from "@/data";
 import type { ViewMode, Studio } from "@/types";
 
 /**
@@ -84,22 +85,11 @@ export default function MainPage() {
           ref={calendarSectionRef} // ⭐ 스크롤 목적지
           className="mt-10 pt-8 border-t border-gray-200 animate-in fade-in slide-in-from-bottom-4 duration-500"
         >
-          <div className="flex flex-col gap-4">
-            <h2 className="text-xl font-bold text-[#0C1A58]">
-              {selectedStudio.name}{" "}
-              <span className="text-sm font-normal text-gray-500">
-                클래스 일정
-              </span>
-            </h2>
-
-            {/* 캘린더 컴포넌트 Placeholder */}
-            <div className="w-full h-[300px] bg-gray-50 rounded-xl border border-gray-200 flex flex-col items-center justify-center text-gray-500 shadow-sm">
-              <p className="mb-2">📅 캘린더 뷰 컴포넌트 영역</p>
-              <p className="text-xs text-gray-400">
-                ID: {selectedStudio.studio_id}
-              </p>
-            </div>
-          </div>
+          <Calendar
+            entity={selectedStudio}
+            entityType="studio"
+            classes={mockClasses}
+          />
         </div>
       )}
     </div>
