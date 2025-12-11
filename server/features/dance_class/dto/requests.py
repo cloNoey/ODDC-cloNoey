@@ -13,13 +13,14 @@ class ClassCreateRequest(BaseModel):
         examples=[["550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440002"]],
         min_length=1
     )
-    class_date: str = Field(
-        description="수업 날짜 (YYYY-MM-DD 형식)",
-        examples=["2025-01-15", "2025-02-20"]
+    timezone: str = Field(
+        description="타임존 (IANA timezone format)",
+        examples=["Asia/Seoul", "America/New_York"],
+        default="Asia/Seoul"
     )
-    start_time: str = Field(
-        description="수업 시작 시간 (HH:MM:SS 형식)",
-        examples=["14:00:00", "19:30:00"]
+    class_datetime: str = Field(
+        description="수업 날짜 및 시간 (ISO8601 형식)",
+        examples=["2025-01-15T14:00:00+09:00", "2025-02-20T19:30:00+09:00"]
     )
     level: Optional[str] = Field(
         default=None,
@@ -32,27 +33,17 @@ class ClassCreateRequest(BaseModel):
         examples=["HIPHOP", "CHOREOGRAPHY", "POPPING"]
     )
 
-    @field_validator('class_date')
+    @field_validator('class_datetime')
     @classmethod
-    def validate_date_format(cls, v: str) -> str:
-        """날짜 형식 검증 (YYYY-MM-DD)"""
+    def validate_datetime_format(cls, v: str) -> str:
+        """ISO8601 datetime 형식 검증"""
         try:
             from datetime import datetime
-            datetime.strptime(v, "%Y-%m-%d")
+            # ISO8601 형식 파싱 (Z를 +00:00으로 변환)
+            datetime.fromisoformat(v.replace('Z', '+00:00'))
             return v
         except ValueError:
-            raise ValueError('Invalid date format. Expected YYYY-MM-DD')
-
-    @field_validator('start_time')
-    @classmethod
-    def validate_time_format(cls, v: str) -> str:
-        """시간 형식 검증 (HH:MM:SS)"""
-        try:
-            from datetime import datetime
-            datetime.strptime(v, "%H:%M:%S")
-            return v
-        except ValueError:
-            raise ValueError('Invalid time format. Expected HH:MM:SS')
+            raise ValueError('Invalid datetime format. Expected ISO8601 (e.g., 2025-01-15T14:00:00+09:00)')
 
 
 class ClassEditRequest(BaseModel):
@@ -64,13 +55,13 @@ class ClassEditRequest(BaseModel):
         default=None,
         description="댄서 ID 목록 (전체 교체)"
     )
-    class_date: Optional[str] = Field(
+    timezone: Optional[str] = Field(
         default=None,
-        description="수업 날짜 (YYYY-MM-DD)"
+        description="타임존 (IANA timezone format)"
     )
-    start_time: Optional[str] = Field(
+    class_datetime: Optional[str] = Field(
         default=None,
-        description="수업 시작 시간 (HH:MM:SS)"
+        description="수업 날짜 및 시간 (ISO8601 형식)"
     )
     level: Optional[str] = Field(
         default=None,
@@ -81,29 +72,19 @@ class ClassEditRequest(BaseModel):
         description="댄스 장르"
     )
 
-    @field_validator('class_date')
+    @field_validator('class_datetime')
     @classmethod
-    def validate_date_format(cls, v: Optional[str]) -> Optional[str]:
+    def validate_datetime_format(cls, v: Optional[str]) -> Optional[str]:
+        """ISO8601 datetime 형식 검증"""
         if v is None:
             return v
         try:
             from datetime import datetime
-            datetime.strptime(v, "%Y-%m-%d")
+            # ISO8601 형식 파싱 (Z를 +00:00으로 변환)
+            datetime.fromisoformat(v.replace('Z', '+00:00'))
             return v
         except ValueError:
-            raise ValueError('Invalid date format. Expected YYYY-MM-DD')
-
-    @field_validator('start_time')
-    @classmethod
-    def validate_time_format(cls, v: Optional[str]) -> Optional[str]:
-        if v is None:
-            return v
-        try:
-            from datetime import datetime
-            datetime.strptime(v, "%H:%M:%S")
-            return v
-        except ValueError:
-            raise ValueError('Invalid time format. Expected HH:MM:SS')
+            raise ValueError('Invalid datetime format. Expected ISO8601 (e.g., 2025-01-15T14:00:00+09:00)')
 
 
 class ClassDeleteRequest(BaseModel):

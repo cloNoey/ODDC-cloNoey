@@ -8,8 +8,8 @@ class ClassResponse(BaseModel):
     class_id: str
     studio_id: str
     dancer_ids: List[str]  # Just IDs, not full dancer objects
-    class_date: str        # YYYY-MM-DD format
-    start_time: str        # HH:MM:SS format
+    timezone: str          # Timezone (e.g., 'Asia/Seoul')
+    class_datetime: str    # ISO8601 format
     level: Optional[str]   # "BASIC" or "ADVANCED" or None
     genre: Optional[str]   # Genre enum value or None
 
@@ -19,8 +19,8 @@ class ClassResponse(BaseModel):
             class_id=class_obj.class_id,
             studio_id=class_obj.studio_id,
             dancer_ids=[dancer.dancer_id for dancer in class_obj.dancers],
-            class_date=class_obj.class_date.strftime("%Y-%m-%d"),
-            start_time=class_obj.start_time.strftime("%H:%M:%S"),
+            timezone=class_obj.timezone,
+            class_datetime=class_obj.class_datetime.isoformat(),
             level=class_obj.level.value if class_obj.level else None,
             genre=class_obj.genre.value if class_obj.genre else None
         )
@@ -44,8 +44,8 @@ class ClassDetailResponse(BaseModel):
     class_id: str
     studio: StudioInfo
     dancers: List[DancerInfo]
-    class_date: str        # YYYY-MM-DD format
-    start_time: str        # HH:MM:SS format
+    timezone: str          # Timezone (e.g., 'Asia/Seoul')
+    class_datetime: str    # ISO8601 format
     level: Optional[str]   # "BASIC" or "ADVANCED" or None
     genre: Optional[str]   # Genre enum value or None
 
@@ -65,8 +65,8 @@ class ClassDetailResponse(BaseModel):
                 )
                 for dancer in class_obj.dancers
             ],
-            class_date=class_obj.class_date.strftime("%Y-%m-%d"),
-            start_time=class_obj.start_time.strftime("%H:%M:%S"),
+            timezone=class_obj.timezone,
+            class_datetime=class_obj.class_datetime.isoformat(),
             level=class_obj.level.value if class_obj.level else None,
             genre=class_obj.genre.value if class_obj.genre else None
         )

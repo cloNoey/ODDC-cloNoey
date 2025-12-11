@@ -48,16 +48,15 @@ class ClassStore:
         self,
         studio_id: str,
         dancer_ids: List[str],
-        class_date: str,     # YYYY-MM-DD string
-        start_time: str,     # HH:MM:SS string
+        timezone: str,            # IANA timezone format
+        class_datetime: str,      # ISO8601 datetime string
         level: Optional[str] = None,  # "BASIC" or "ADVANCED" or None
         genre: Optional[str] = None
     ) -> Class:
         """새 수업 생성"""
         try:
-            # Parse date and time
-            parsed_date = datetime.strptime(class_date, "%Y-%m-%d").date()
-            parsed_time = datetime.strptime(start_time, "%H:%M:%S").time()
+            # Parse ISO8601 datetime
+            parsed_datetime = datetime.fromisoformat(class_datetime.replace('Z', '+00:00'))
 
             # Fetch dancers
             dancers_result = await SESSION.scalars(
@@ -71,10 +70,10 @@ class ClassStore:
 
             class_obj = Class(
                 studio_id=studio_id,
-                class_date=parsed_date,
-                start_time=parsed_time,
+                timezone=timezone,
+                class_datetime=parsed_datetime,
                 genre=Genre(genre) if genre else None,
-                level=Level(level) if level else None,
+                level=Level(level) if level else Level.BASIC,  # Default to BASIC if not provided
                 dancers=dancers
             )
             SESSION.add(class_obj)
@@ -87,8 +86,8 @@ class ClassStore:
         self,
         class_obj: Class,
         dancer_ids: Optional[List[str]] = None,
-        class_date: Optional[str] = None,
-        start_time: Optional[str] = None,
+        timezone: Optional[str] = None,
+        class_datetime: Optional[str] = None,
         level: Optional[str] = None,
         genre: Optional[str] = None
     ) -> Class:
@@ -111,13 +110,13 @@ class ClassStore:
                     raise ValueError("One or more dancer IDs not found")
                 class_obj.dancers = dancers
 
-            # Update date
-            if class_date is not None:
-                class_obj.class_date = datetime.strptime(class_date, "%Y-%m-%d").date()
+            # Update timezone
+            if timezone is not None:
+                class_obj.timezone = timezone
 
-            # Update time
-            if start_time is not None:
-                class_obj.start_time = datetime.strptime(start_time, "%H:%M:%S").time()
+            # Update datetime
+            if class_datetime is not None:
+                class_obj.class_datetime = datetime.fromisoformat(class_datetime.replace('Z', '+00:00'))
 
             # Update level
             if level is not None:

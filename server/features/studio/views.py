@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Query, HTTPException, Depends
-from typing import Annotated, List, Optional
+from fastapi import APIRouter, HTTPException, Depends
+from typing import Annotated, List
 from starlette.status import HTTP_200_OK, HTTP_204_NO_CONTENT
 
 from server.features.studio.service import StudioService
@@ -8,7 +8,7 @@ from server.features.studio.dto.requests import (
     StudioEditRequest,
     StudioDeleteRequest
 )
-from server.features.studio.dto.responses import StudioResponse
+from server.features.studio.dto.responses import StudioResponse, StudioListItem
 
 
 studio_router = APIRouter()
@@ -29,6 +29,17 @@ async def create_studio(
 
 # ======================== READ ========================
 
+@studio_router.get("/list", status_code=HTTP_200_OK,
+                   summary="스튜디오 목록 조회 (경량)",
+                   description="경량화된 스튜디오 목록을 조회합니다 (카드/목록 뷰용).")
+async def get_studios_list(
+    studio_service: Annotated[StudioService, Depends()]
+) -> List[StudioListItem]:
+    """전체 스튜디오 목록 조회 - 경량 버전"""
+    studios = await studio_service.get_all_studios()
+    return [StudioListItem.from_studio(s) for s in studios]
+
+
 @studio_router.get("/{studio_id}", status_code=HTTP_200_OK,
                    summary="스튜디오 조회 (ID)",
                    description="스튜디오 ID로 스튜디오 정보를 조회합니다.")
@@ -44,29 +55,6 @@ async def get_studio_by_id(
             detail={"message": "스튜디오를 찾을 수 없습니다."}
         )
     return StudioResponse.from_studio(studio)
-
-
-@studio_router.get("/", status_code=HTTP_200_OK,
-                   summary="스튜디오 조회",
-                   description="전체 스튜디오 목록을 조회하거나 이름으로 특정 스튜디오를 조회합니다.")
-async def get_studios(
-    studio_service: Annotated[StudioService, Depends()],
-    name: Optional[str] = Query(None, description="검색할 스튜디오 이름 (선택사항)")
-) -> List[StudioResponse] | StudioResponse:
-    """전체 스튜디오 목록 조회 또는 이름으로 조회"""
-    if name is None:
-        # 전체 목록 조회
-        studios = await studio_service.get_all_studios()
-        return [StudioResponse.from_studio(s) for s in studios]
-    else:
-        # 이름으로 조회
-        studio = await studio_service.get_studio_by_name(name)
-        if studio is None:
-            raise HTTPException(
-                status_code=404,
-                detail={"message": "스튜디오를 찾을 수 없습니다."}
-            )
-        return StudioResponse.from_studio(studio)
 
 
 @studio_router.get("/instagram/{instagram}", status_code=HTTP_200_OK,

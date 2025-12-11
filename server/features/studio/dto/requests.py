@@ -22,6 +22,38 @@ class StudioCreateRequest(BaseModel):
         examples=["서울시 강남구 논현로 716", "Seoul, Gangnam-gu"],
         max_length=255
     )
+    lat: Optional[float] = Field(
+        default=None,
+        description="위도 (Latitude)",
+        examples=[37.5172, 37.4979],
+        ge=-90.0,
+        le=90.0
+    )
+    lng: Optional[float] = Field(
+        default=None,
+        description="경도 (Longitude)",
+        examples=[127.0473, 127.0276],
+        ge=-180.0,
+        le=180.0
+    )
+    station: Optional[str] = Field(
+        default=None,
+        description="가까운 역",
+        examples=["강남역", "홍대입구역"],
+        max_length=100
+    )
+    city: Optional[str] = Field(
+        default=None,
+        description="도시",
+        examples=["서울", "부산"],
+        max_length=100
+    )
+    district: Optional[str] = Field(
+        default=None,
+        description="구",
+        examples=["강남구", "마포구"],
+        max_length=100
+    )
     email: Optional[str] = Field(
         default=None,
         description="스튜디오 이메일",
@@ -112,6 +144,38 @@ class StudioEditRequest(BaseModel):
         description="스튜디오 위치/주소",
         examples=["서울시 강남구 논현로 716"],
         max_length=255
+    )
+    lat: Optional[float] = Field(
+        default=None,
+        description="위도 (Latitude)",
+        examples=[37.5172],
+        ge=-90.0,
+        le=90.0
+    )
+    lng: Optional[float] = Field(
+        default=None,
+        description="경도 (Longitude)",
+        examples=[127.0473],
+        ge=-180.0,
+        le=180.0
+    )
+    station: Optional[str] = Field(
+        default=None,
+        description="가까운 역",
+        examples=["강남역"],
+        max_length=100
+    )
+    city: Optional[str] = Field(
+        default=None,
+        description="도시",
+        examples=["서울"],
+        max_length=100
+    )
+    district: Optional[str] = Field(
+        default=None,
+        description="구",
+        examples=["강남구"],
+        max_length=100
     )
     email: Optional[str] = Field(
         default=None,

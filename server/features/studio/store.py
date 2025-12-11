@@ -47,6 +47,11 @@ class StudioStore:
         name: str,
         instagram: Optional[str] = None,
         location: Optional[str] = None,
+        lat: Optional[float] = None,
+        lng: Optional[float] = None,
+        station: Optional[str] = None,
+        city: Optional[str] = None,
+        district: Optional[str] = None,
         email: Optional[str] = None,
         website: Optional[str] = None,
         reservation_form: Optional[str] = None,
@@ -68,6 +73,11 @@ class StudioStore:
                 name=name,
                 instagram=instagram,
                 location=location,
+                lat=lat,
+                lng=lng,
+                station=station,
+                city=city,
+                district=district,
                 email=email,
                 website=website,
                 reservation_form=reservation_form,
@@ -89,6 +99,11 @@ class StudioStore:
         name: Optional[str] = None,
         instagram: Optional[str] = None,
         location: Optional[str] = None,
+        lat: Optional[float] = None,
+        lng: Optional[float] = None,
+        station: Optional[str] = None,
+        city: Optional[str] = None,
+        district: Optional[str] = None,
         email: Optional[str] = None,
         website: Optional[str] = None,
         reservation_form: Optional[str] = None,
@@ -114,6 +129,16 @@ class StudioStore:
                 studio.instagram = instagram
             if location is not None:
                 studio.location = location
+            if lat is not None:
+                studio.lat = lat
+            if lng is not None:
+                studio.lng = lng
+            if station is not None:
+                studio.station = station
+            if city is not None:
+                studio.city = city
+            if district is not None:
+                studio.district = district
             if email is not None:
                 studio.email = email
             if website is not None:

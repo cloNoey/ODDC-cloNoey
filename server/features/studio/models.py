@@ -1,6 +1,6 @@
 from server.database.common import Base
 
-from sqlalchemy import String, BigInteger, Time, Boolean, ForeignKey
+from sqlalchemy import String, BigInteger, Time, Boolean, ForeignKey, Numeric
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import time
 from typing import Optional, List, TYPE_CHECKING
@@ -25,6 +25,16 @@ class Studio(Base):
     instagram: Mapped[Optional[str]] = mapped_column(String(50), unique=True, nullable=True)
     # 스튜디오 위치
     location: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    # 스튜디오 위도
+    lat: Mapped[Optional[float]] = mapped_column(Numeric(precision=10, scale=7), nullable=True)
+    # 스튜디오 경도
+    lng: Mapped[Optional[float]] = mapped_column(Numeric(precision=10, scale=7), nullable=True)
+    # 가까운 역
+    station: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    # 도시
+    city: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    # 구
+    district: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     # 스튜디오 이메일
     email: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     # 스튜디오 웹사이트

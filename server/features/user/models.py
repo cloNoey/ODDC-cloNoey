@@ -13,7 +13,7 @@ import uuid
 import enum
 
 # 유저 타입
-class UserRole(enum.Enum):
+class UserType(enum.Enum):
     USER = "user"
     DANCER = "dancer"
 
@@ -28,7 +28,7 @@ class User(Base):
     # 유저 비밀번호
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     # 유저 타입
-    role: Mapped[UserRole] = mapped_column(Enum(UserRole), nullable=False, default=UserRole.USER)
+    type: Mapped[UserType] = mapped_column(Enum(UserType), nullable=False, default=UserType.USER)
     # 유저 계정 생성 날짜
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
 

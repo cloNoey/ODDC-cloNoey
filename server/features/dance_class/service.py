@@ -21,8 +21,8 @@ class ClassService:
         class_obj = await self.class_db_store.create_class(
             studio_id=class_request.studio_id,
             dancer_ids=class_request.dancer_ids,
-            class_date=class_request.class_date,
-            start_time=class_request.start_time,
+            timezone=class_request.timezone,
+            class_datetime=class_request.class_datetime,
             level=class_request.level,
             genre=class_request.genre
         )
@@ -42,8 +42,8 @@ class ClassService:
         updated_class = await self.class_db_store.edit_class(
             class_obj=class_obj,
             dancer_ids=class_request.dancer_ids,
-            class_date=class_request.class_date,
-            start_time=class_request.start_time,
+            timezone=class_request.timezone,
+            class_datetime=class_request.class_datetime,
             level=class_request.level,
             genre=class_request.genre
         )

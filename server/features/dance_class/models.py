@@ -1,8 +1,8 @@
 from server.database.common import Base
 
-from sqlalchemy import String, Date, Time, ForeignKey, Enum, Table, Column
+from sqlalchemy import String, ForeignKey, Enum, Table, Column, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from datetime import date, time
+from datetime import datetime
 from typing import List, Optional, TYPE_CHECKING
 
 # Import Genre for actual use (not TYPE_CHECKING)
@@ -46,9 +46,9 @@ class Class(Base):
         nullable=False
     )
 
-    # Date and Time
-    class_date: Mapped[date] = mapped_column(Date, nullable=False)
-    start_time: Mapped[time] = mapped_column(Time, nullable=False)
+    # Date, Time, and Timezone
+    timezone: Mapped[str] = mapped_column(String(50), nullable=False, default='Asia/Seoul')
+    class_datetime: Mapped[datetime] = mapped_column(DateTime, nullable=False)
 
     # Genre (from Dancer model)
     genre: Mapped[Optional[Genre]] = mapped_column(Enum(Genre), nullable=True)

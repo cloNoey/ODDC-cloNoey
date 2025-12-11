@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Query, File, UploadFile, HTTPException
-from typing import Annotated, List
+from fastapi import APIRouter, File, UploadFile, HTTPException
+from typing import Annotated
 from fastapi import Depends
 
 from server.features.dancer.service import DancerService
@@ -48,17 +48,6 @@ async def get_dancer_by_id(
             detail={"message": "댄서를 찾을 수 없습니다."}
         )
     return DancerResponse.from_dancer(dancer)
-
-@dancer_router.get("/", status_code=HTTP_200_OK,
-                     summary="댄서 검색 (이름)",
-                     description="특정 이름이 포함된 댄서 목록을 조회합니다.")
-async def get_dancers_by_name(
-    dancer_service: Annotated[DancerService, Depends()],
-    name: str = Query(..., description="검색할 댄서 이름")
-) -> List[DancerResponse]:
-    """댄서 이름으로 검색 - 해당 이름이 names에 포함된 모든 댄서 반환"""
-    dancers = await dancer_service.get_dancer_by_name(name)
-    return [DancerResponse.from_dancer(dancer) for dancer in dancers]
 
 @dancer_router.get("/instagram/{instagram}", status_code=HTTP_200_OK,
                      summary="댄서 조회 (인스타그램)",
