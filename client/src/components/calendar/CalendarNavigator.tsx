@@ -70,7 +70,11 @@ export default function CalendarNavigator({
       <div className="flex flex-col items-center">
         <span
           className="font-medium text-gray-600 items-center justify-center pl-0.5"
-          style={{ fontSize: "var(--text-sm)" }}
+          style={{
+            fontSize: "var(--text-sm)",
+            fontFamily: "var(--font-calendar-number)",
+            letterSpacing: "var(--letter-spacing-year)",
+          }}
         >
           {year}
         </span>
@@ -88,11 +92,12 @@ export default function CalendarNavigator({
           </button>
 
           <span
-            className="flex font-bold items-center tracking-[-2px]"
+            className="flex font-bold items-center"
             style={{
               fontSize: "var(--text-3xl)",
               color: "var(--color-primary)",
-              fontFamily: "'Inria Serif', serif",
+              fontFamily: "var(--font-calendar-number)",
+              letterSpacing: "var(--letter-spacing-calendar)",
             }}
           >
             {month}

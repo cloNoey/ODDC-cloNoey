@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inria+Serif:wght@400;700&display=swap');
 
 @layer base {
   /* Color Variables */
@@ -21,6 +22,11 @@
     --text-xl: 18px;
     --text-2xl: 20px;
     --text-3xl: 24px;
+
+    /* Font Family Variables */
+    --font-calendar-number: 'Inria Serif', serif;
+    --letter-spacing-calendar: -2px;
+    --letter-spacing-year: 0px;
   }
 
   /* Font 설정 */

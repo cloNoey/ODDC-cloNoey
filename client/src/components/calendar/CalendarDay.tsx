@@ -8,6 +8,56 @@ interface CalendarDayProps {
   className?: string;
 }
 
+interface DateNumberProps {
+  date: number;
+  isToday: boolean;
+  isSelected: boolean;
+  isCurrentMonth: boolean;
+}
+
+/**
+ * DateNumber 컴포넌트
+ * 날짜 숫자 박스 (둥근 네모)
+ */
+function DateNumber({
+  date,
+  isToday,
+  isSelected,
+  isCurrentMonth,
+}: DateNumberProps) {
+  return (
+    <div
+      className={cn(
+        "flex items-center justify-center",
+        "w-6 h-6 rounded pr-0.5",
+        isToday || isSelected ? "font-bold" : "font-medium",
+        !isToday &&
+          !isSelected &&
+          (isCurrentMonth ? "text-gray-900" : "text-gray-400")
+      )}
+      style={{
+        fontSize: "var(--text-base)",
+        fontFamily: "var(--font-calendar-number)",
+        letterSpacing: "var(--letter-spacing-calendar)",
+        backgroundColor: isToday
+          ? "var(--color-primary)"
+          : isSelected
+            ? "var(--color-white)"
+            : undefined,
+        color: isToday
+          ? "var(--color-white)"
+          : isSelected
+            ? "var(--color-primary)"
+            : undefined,
+        border:
+          isSelected && !isToday ? "1px solid var(--color-primary)" : undefined,
+      }}
+    >
+      {date}
+    </div>
+  );
+}
+
 /**
  * CalendarDay 컴포넌트
  * 개별 날짜 셀 렌더링
@@ -27,36 +77,23 @@ export default function CalendarDay({
       className={cn(
         "aspect-square flex flex-col items-center justify-center",
         "cursor-pointer transition-colors",
-        "hover:bg-gray-50",
+        "relative",
         !isCurrentMonth && "opacity-40",
         className
       )}
-      style={{
-        backgroundColor: isSelected ? "var(--color-primary-bg)" : undefined,
-      }}
     >
       {/* 날짜 숫자 */}
-      <div
-        className={cn(
-          "font-medium",
-          "flex items-center justify-center",
-          "w-8 h-8 rounded-full",
-          isCurrentMonth ? "text-gray-900" : "text-gray-400"
-        )}
-        style={{
-          fontSize: "var(--text-base)",
-          borderWidth: isToday ? "2px" : undefined,
-          borderStyle: isToday ? "solid" : undefined,
-          borderColor: isToday ? "var(--color-primary)" : undefined,
-        }}
-      >
-        {date.getDate()}
-      </div>
+      <DateNumber
+        date={date.getDate()}
+        isToday={isToday}
+        isSelected={isSelected}
+        isCurrentMonth={isCurrentMonth}
+      />
 
-      {/* 클래스 있을 때 점 표시 */}
+      {/* 클래스 있을 때 점 표시 - 오른쪽 위 */}
       {hasClasses && (
         <div
-          className="w-1 h-1 rounded-full mt-1"
+          className="absolute top-3 right-3 w-1 h-1 rounded-full"
           style={{ backgroundColor: "var(--color-primary)" }}
         />
       )}

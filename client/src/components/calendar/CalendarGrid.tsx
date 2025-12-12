@@ -7,6 +7,7 @@ interface CalendarGridProps {
   currentMonth: Date;
   classes: ClassSchedule[];
   onDateClick?: (date: Date, classes: ClassSchedule[]) => void;
+  onMonthChange?: (delta: number) => void;
   selectedDate: Date | null;
   className?: string;
 }
@@ -108,6 +109,7 @@ export default function CalendarGrid({
   currentMonth,
   classes,
   onDateClick,
+  onMonthChange,
   selectedDate,
   className,
 }: CalendarGridProps) {
@@ -119,18 +121,34 @@ export default function CalendarGrid({
 
   // 날짜 클릭 핸들러
   const handleDayClick = (dayData: CalendarDayData) => {
+    // 현재 달이 아닌 경우 해당 달로 이동
+    if (!dayData.isCurrentMonth && onMonthChange) {
+      const clickedYear = dayData.date.getFullYear();
+      const clickedMonth = dayData.date.getMonth();
+      const currentYear = currentMonth.getFullYear();
+      const currentMonthIndex = currentMonth.getMonth();
+
+      // 월 차이 계산
+      const monthDiff = (clickedYear - currentYear) * 12 + (clickedMonth - currentMonthIndex);
+      onMonthChange(monthDiff);
+    }
+
     onDateClick?.(dayData.date, dayData.classes);
   };
 
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
+    <div className={cn("flex flex-col gap-2 px-1", className)}>
       {/* 요일 헤더 */}
       <div className="grid grid-cols-7 gap-1">
         {WEEKDAYS.map((day) => (
           <div
             key={day}
-            className="text-center font-medium text-gray-600 py-2"
-            style={{ fontSize: "var(--text-md)" }}
+            className="text-center font-medium text-gray-600 pt-1"
+            style={{
+              fontSize: "var(--text-md)",
+              fontFamily: "var(--font-calendar-number)",
+              letterSpacing: "var(--letter-spacing-year)",
+            }}
           >
             {day}
           </div>

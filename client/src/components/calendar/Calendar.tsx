@@ -142,6 +142,7 @@ export default function Calendar<T extends Studio | Dancer>({
         currentMonth={currentMonth}
         classes={filteredClasses}
         onDateClick={handleDateClick}
+        onMonthChange={handleMonthChange}
         selectedDate={selectedDate}
       />
 
