@@ -11,9 +11,11 @@ interface LogoProps {
  */
 export default function Logo({ className }: LogoProps) {
   return (
-    <div className={cn("flex justify-center items-center", className)}>
+    <div className="flex justify-center items-center">
       {/* 임시 텍스트 로고 - 추후 이미지/SVG로 교체 */}
-      <h1 className="text-2xl font-bold">ODDC</h1>
+      <h1 className={cn("text-2xl md:text-3xl lg:text-4xl font-bold", className)}>
+        ODDC
+      </h1>
     </div>
   );
 }

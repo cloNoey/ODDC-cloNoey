@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { cn } from "@/lib/utils";
 import { Logo, SearchBar } from "@/components/common";
 import {
   ContentToggle,
@@ -17,18 +18,49 @@ export default function MainPage() {
   const [viewMode, setViewMode] = useState<ViewMode>("card");
   // 1. 선택된 스튜디오 상태 관리 (null이면 선택 안 됨)
   const [selectedStudio, setSelectedStudio] = useState<Studio | null>(null);
+  // 2. Sticky 상태 관리
+  const [isSticky, setIsSticky] = useState(false);
 
-  // 2. 스크롤 이동할 목표 지점(캘린더 뷰)을 위한 ref 생성
+  // 3. 스크롤 이동할 목표 지점(캘린더 뷰)을 위한 ref 생성
   const calendarSectionRef = useRef<HTMLDivElement>(null);
+  // 4. Sticky 감지를 위한 sentinel ref
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  // 5. Sticky 헤더 ref
+  const headerRef = useRef<HTMLDivElement>(null);
 
-  // 3. selectedStudio가 변경되어 하단 영역이 생기면 자동으로 스크롤 이동
+  // 5. Intersection Observer로 sticky 상태 감지
   useEffect(() => {
-    if (selectedStudio && calendarSectionRef.current) {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // sentinel이 화면에서 사라지면 sticky 상태
+        setIsSticky(!entry.isIntersecting);
+      },
+      { threshold: 1 }
+    );
+
+    observer.observe(sentinel);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  // 6. selectedStudio가 변경되어 하단 영역이 생기면 자동으로 스크롤 이동
+  useEffect(() => {
+    if (selectedStudio && calendarSectionRef.current && headerRef.current) {
       // DOM 렌더링 안정성을 위해 약간의 지연 후 이동
       setTimeout(() => {
-        calendarSectionRef.current?.scrollIntoView({
+        const headerHeight = headerRef.current!.offsetHeight;
+        const calendarTop =
+          calendarSectionRef.current!.getBoundingClientRect().top +
+          window.scrollY;
+
+        window.scrollTo({
+          top: calendarTop - headerHeight - 10, // 헤더 높이 + 10px 오프셋
           behavior: "smooth",
-          block: "start", // 캘린더 상단이 화면 맨 위로 오게 하려면 'start', 중앙은 'center'
         });
       }, 100);
     }
@@ -51,16 +83,49 @@ export default function MainPage() {
   };
 
   return (
-    <div className="relative min-h-screen px-4 pb-40">
-      {/* Logo */}
-      <div style={{ marginTop: "100px" }}>
-        <Logo />
+    <div className="relative min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 pb-40">
+      {/* Sentinel for Intersection Observer */}
+      <div
+        ref={sentinelRef}
+        style={{ height: "1px", position: "absolute", top: "10px" }}
+      />
+
+      {/* Sticky Header: Logo + SearchBar */}
+      <div
+        ref={headerRef}
+        className={cn(
+          "transition-all duration-300",
+          isSticky
+            ? "fixed top-0 left-0 right-0 z-50 bg-white px-12 sm:px-16 md:px-24 lg:px-32"
+            : "relative z-50 bg-white"
+        )}
+        style={{
+          marginTop: isSticky ? "0px" : "100px",
+          paddingTop: isSticky ? "16px" : "20px",
+          paddingBottom: isSticky ? "16px" : "20px",
+          paddingLeft: isSticky ? undefined : "20px",
+          paddingRight: isSticky ? undefined : "20px",
+          boxShadow: isSticky ? "0 4px 6px 0 rgba(0, 0, 0, 0.1)" : "none",
+        }}
+      >
+        {/* Logo */}
+        <div>
+          <Logo />
+        </div>
+
+        {/* SearchBar */}
+        <div
+          className={cn("flex justify-center transition-all duration-300")}
+          style={{ marginTop: isSticky ? "12px" : "30px" }}
+        >
+          <SearchBar className="w-full max-w-[320px] sm:max-w-[400px] md:max-w-[500px]" />
+        </div>
       </div>
 
-      {/* SearchBar */}
-      <div style={{ marginTop: "30px" }} className="flex justify-center">
-        <SearchBar />
-      </div>
+      {/* Placeholder when header is fixed */}
+      {isSticky && headerRef.current && (
+        <div style={{ height: `${headerRef.current.offsetHeight}px` }} />
+      )}
 
       {/* ContentToggle */}
       <div style={{ marginTop: "50px" }}>
@@ -83,7 +148,7 @@ export default function MainPage() {
       {selectedStudio && (
         <div
           ref={calendarSectionRef} // ⭐ 스크롤 목적지
-          className="mt-10 pt-8 border-t border-gray-200 animate-in fade-in slide-in-from-bottom-4 duration-500"
+          className="mt-5 pt-5 pb-25 mb-5 border-t border-gray-200 animate-in fade-in slide-in-from-bottom-4 duration-500"
         >
           <Calendar
             entity={selectedStudio}
