@@ -48,27 +48,30 @@ export default function CalendarHeader<T extends Studio | Dancer>({
       >
         {entityName}
       </span>
-      <div className="flex gap-3 justify-between w-full">
-        {/* 좌측: 엔티티 정보 */}
-        <div className="flex-col">
-          {/* 정보 확인 버튼 (placeholder - 추후 모달 구현) */}
-          <button
-            className="ml-1 mb-1 transition-colors flex items-center gap-1 text-gray-500 hover:text-gray-700"
-            style={{ fontSize: "var(--text-xs)" }}
-          >
-            <img src={CircleRight} className="w-[10px] h-[10px]" />
-            {isStudio ? "스튜디오 정보 보기" : "댄서 정보 보기"}
-          </button>
+      <div className="flex-col w-full">
+        {/* 정보 확인 버튼 (placeholder - 추후 모달 구현) */}
+        <button
+          className="ml-1 mb-1 transition-colors flex items-center gap-1 text-gray-500 hover:text-gray-700"
+          style={{ fontSize: "var(--text-xs)" }}
+        >
+          <img src={CircleRight} className="w-[10px] h-[10px]" />
+          {isStudio ? "스튜디오 정보 보기" : "댄서 정보 보기"}
+        </button>
+
+        {/* 엔티티 정보 + 결제 정보 */}
+        <div className="flex gap-3 justify-between items-center w-full">
+          {/* 좌측: 엔티티 정보 */}
           <div className="flex items-center">
             {/* 엔티티 이름 */}
             <h2
               className={cn(
-                "flex justify-center items-center w-[130px] font-bold mr-2 border-r border-gray-400",
+                "flex justify-center items-center w-[140px] font-bold mr-2 border-r border-gray-400",
                 isOverflowing ? "tracking-[-1.5px]" : ""
               )}
               style={{
                 color: "var(--color-primary)",
-                fontSize: isOverflowing ? "var(--text-lg)" : "var(--text-xl)",
+                fontSize: isOverflowing ? "var(--text-xl)" : "var(--text-2xl)",
+                fontFamily: "var(--font-calendar-number)",
               }}
             >
               {entityName}
@@ -118,36 +121,37 @@ export default function CalendarHeader<T extends Studio | Dancer>({
               </div>
             </div>
           </div>
-        </div>
-        {/* 결제 정보 */}
-        <div className="flex items-center justify-end mr-2">
-          {isStudio && !studio?.reservation_form && (
-            <div
-              className="px-2 py-1 border bg-transparent rounded font-medium whitespace-nowrap"
-              style={{
-                borderColor: "var(--color-primary)",
-                color: "var(--color-primary)",
-                fontSize: "var(--text-sm)",
-              }}
-            >
-              현장결제만
-            </div>
-          )}
-          {isStudio && studio?.reservation_form && (
-            <a
-              href={studio.reservation_form}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-2 py-1 rounded font-medium hover:opacity-90 transition-opacity whitespace-nowrap"
-              style={{
-                backgroundColor: "var(--color-primary)",
-                color: "var(--color-white)",
-                fontSize: "var(--text-sm)",
-              }}
-            >
-              사전 신청하러 가기
-            </a>
-          )}
+
+          {/* 결제 정보 */}
+          <div className="flex items-center justify-end">
+            {isStudio && !studio?.reservation_form && (
+              <div
+                className="px-2 py-1 border bg-transparent rounded font-medium whitespace-nowrap"
+                style={{
+                  borderColor: "var(--color-primary)",
+                  color: "var(--color-primary)",
+                  fontSize: "var(--text-sm)",
+                }}
+              >
+                현장결제만
+              </div>
+            )}
+            {isStudio && studio?.reservation_form && (
+              <a
+                href={studio.reservation_form}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-2 py-1 rounded font-medium hover:opacity-90 transition-opacity whitespace-nowrap"
+                style={{
+                  backgroundColor: "var(--color-primary)",
+                  color: "var(--color-white)",
+                  fontSize: "var(--text-sm)",
+                }}
+              >
+                사전 신청하러 가기
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </div>

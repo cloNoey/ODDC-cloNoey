@@ -29,7 +29,7 @@ function DateNumber({
     <div
       className={cn(
         "flex items-center justify-center",
-        "w-6 h-6 rounded pr-0.5",
+        "w-6 h-6 rounded",
         isToday || isSelected ? "font-bold" : "font-medium",
         !isToday &&
           !isSelected &&
