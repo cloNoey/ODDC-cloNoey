@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import arrowLeft from "@/assets/icons/arrow_left.svg";
 import arrowRight from "@/assets/icons/arrow_right.svg";
+import verticalDots from "@/assets/icons/vertical_dots.svg";
 
 interface CalendarNavigatorProps {
   currentDate: Date;
@@ -8,24 +9,6 @@ interface CalendarNavigatorProps {
   onOpenFilters: () => void;
   className?: string;
 }
-
-/**
- * 월 이름
- */
-const MONTH_NAMES = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
 
 /**
  * CalendarNavigator 컴포넌트
@@ -38,70 +21,70 @@ export default function CalendarNavigator({
   className,
 }: CalendarNavigatorProps) {
   const year = currentDate.getFullYear();
-  const month = MONTH_NAMES[currentDate.getMonth()];
+  const month = currentDate.getMonth() + 1;
 
   return (
-    <div className={cn("flex items-center justify-between", className)}>
-      {/* 좌측: 이전 달 버튼 */}
-      <button
-        onClick={() => onMonthChange(-1)}
-        className={cn(
-          "p-2 hover:bg-gray-100 rounded-lg transition-colors",
-          "flex items-center justify-center"
-        )}
-        aria-label="이전 달"
-      >
-        <img src={arrowLeft} alt="이전 달" className="w-[8px] h-[14px]" />
-      </button>
+    <div className={cn("flex items-center justify-between w-full", className)}>
+      {/* 왼쪽 빈 공간 (중앙 정렬을 위한 균형) */}
+      <div className="flex-1"></div>
 
-      {/* 중앙: 년도/월 표시 */}
+      {/* 중앙: navigator content */}
       <div className="flex flex-col items-center">
         <span
-          className="font-medium text-gray-600"
-          style={{ fontSize: "var(--text-base)" }}
+          className="font-medium text-gray-600 items-center justify-center pl-0.5"
+          style={{ fontSize: "var(--text-sm)" }}
         >
           {year}
         </span>
-        <span
-          className="font-bold"
-          style={{ fontSize: "var(--text-xl)", color: "var(--color-primary)" }}
-        >
-          {month}
-        </span>
+        <div className="flex gap-5 items-center justify-center">
+          {/* 이전 달 버튼 */}
+          <button
+            onClick={() => onMonthChange(-1)}
+            className={cn(
+              "p-2 hover:bg-gray-100 rounded-lg transition-colors",
+              "flex items-center justify-center"
+            )}
+            aria-label="이전 달"
+          >
+            <img src={arrowLeft} alt="이전 달" className="w-[8px] h-[14px]" />
+          </button>
+
+          <span
+            className="flex font-bold items-center tracking-[-2px]"
+            style={{
+              fontSize: "var(--text-3xl)",
+              color: "var(--color-primary)",
+              fontFamily: "'Inria Serif', serif",
+            }}
+          >
+            {month}
+          </span>
+
+          {/* 다음 달 버튼 */}
+          <button
+            onClick={() => onMonthChange(1)}
+            className={cn(
+              "p-2 hover:bg-gray-100 rounded-lg transition-colors",
+              "flex items-center justify-center"
+            )}
+            aria-label="다음 달"
+          >
+            <img src={arrowRight} alt="다음 달" className="w-[8px] h-[14px]" />
+          </button>
+        </div>
       </div>
 
-      {/* 우측: 다음 달 버튼 + 옵션 버튼 */}
-      <div className="flex items-center gap-2">
+      {/* 오른쪽: option 버튼 */}
+      <div className="flex-1 flex justify-end">
         <button
-          onClick={() => onMonthChange(1)}
+          onClick={onOpenFilters}
           className={cn(
             "p-2 hover:bg-gray-100 rounded-lg transition-colors",
             "flex items-center justify-center"
           )}
-          aria-label="다음 달"
-        >
-          <img src={arrowRight} alt="다음 달" className="w-[8px] h-[14px]" />
-        </button>
-
-        <button
-          onClick={onOpenFilters}
-          className={cn(
-            "px-3 py-1.5 font-medium rounded-lg transition-colors"
-          )}
-          style={{
-            fontSize: "var(--text-md)",
-            backgroundColor: "var(--color-primary-bg)",
-            color: "var(--color-primary)",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "var(--color-lavender)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "var(--color-primary-bg)")
-          }
           aria-label="필터 옵션"
         >
-          옵션
+          <img src={verticalDots} alt="옵션" className="w-[20px] h-[20px]" />
         </button>
       </div>
     </div>
