@@ -23,10 +23,48 @@ export default function CalendarNavigator({
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
 
+  // Today 버튼 클릭 핸들러
+  const handleTodayClick = () => {
+    const today = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+    const todayYear = today.getFullYear();
+    const todayMonth = today.getMonth();
+
+    // 현재 날짜와 오늘 날짜의 월 차이 계산
+    const monthDiff =
+      (todayYear - currentYear) * 12 + (todayMonth - currentMonth);
+
+    if (monthDiff !== 0) {
+      onMonthChange(monthDiff);
+    }
+  };
+
   return (
     <div className={cn("flex items-center justify-between w-full", className)}>
-      {/* 왼쪽 빈 공간 (중앙 정렬을 위한 균형) */}
-      <div className="flex-1"></div>
+      {/* 왼쪽: Today 버튼 */}
+      <div className="flex-1 flex items-center">
+        <button
+          onClick={handleTodayClick}
+          className={cn(
+            "ml-3 px-3 py-1.5 font-medium rounded-lg transition-colors"
+          )}
+          style={{
+            fontSize: "var(--text-sm)",
+            backgroundColor: "var(--color-primary-bg)",
+            color: "var(--color-primary)",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.backgroundColor = "var(--color-lavender)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.backgroundColor = "var(--color-primary-bg)")
+          }
+          aria-label="오늘로 이동"
+        >
+          Today
+        </button>
+      </div>
 
       {/* 중앙: navigator content */}
       <div className="flex flex-col items-center">
@@ -84,7 +122,7 @@ export default function CalendarNavigator({
           )}
           aria-label="필터 옵션"
         >
-          <img src={verticalDots} alt="옵션" className="w-[20px] h-[20px]" />
+          <img src={verticalDots} alt="옵션" className="w-[16px] h-[16px]" />
         </button>
       </div>
     </div>

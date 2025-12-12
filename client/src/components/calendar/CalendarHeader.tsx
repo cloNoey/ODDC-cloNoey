@@ -36,7 +36,9 @@ export default function CalendarHeader<T extends Studio | Dancer>({
   }, [entityName]);
 
   return (
-    <div className={cn("flex justify-between items-start gap-4", className)}>
+    <div
+      className={cn("flex justify-between items-start gap-4 pb-3", className)}
+    >
       {/* 측정용 숨겨진 요소 - 항상 원래 크기(20px)로 측정 */}
       <span
         ref={measureRef}
