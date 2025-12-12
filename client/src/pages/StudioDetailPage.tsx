@@ -12,7 +12,7 @@ export default function StudioDetailPage() {
 
   if (!studio) {
     return (
-      <div className="px-8 py-8">
+      <div className="px-4 py-8">
         <h1 className="text-2xl font-bold text-gray-900">
           스튜디오를 찾을 수 없습니다
         </h1>
@@ -24,7 +24,7 @@ export default function StudioDetailPage() {
   }
 
   return (
-    <div className="px-8 py-8">
+    <div className="px-4 py-8">
       <Calendar entity={studio} entityType="studio" classes={mockClasses} />
     </div>
   );
