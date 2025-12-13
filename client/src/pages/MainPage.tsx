@@ -20,6 +20,8 @@ export default function MainPage() {
   const [selectedStudio, setSelectedStudio] = useState<Studio | null>(null);
   // 2. Sticky 상태 관리
   const [isSticky, setIsSticky] = useState(false);
+  // 3. 헤더 높이 관리 (placeholder용)
+  const [headerHeight, setHeaderHeight] = useState(0);
 
   // 3. 스크롤 이동할 목표 지점(캘린더 뷰)을 위한 ref 생성
   const calendarSectionRef = useRef<HTMLDivElement>(null);
@@ -28,7 +30,30 @@ export default function MainPage() {
   // 5. Sticky 헤더 ref
   const headerRef = useRef<HTMLDivElement>(null);
 
-  // 5. Intersection Observer로 sticky 상태 감지
+  // 5. 헤더 높이 측정 및 업데이트
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      if (headerRef.current && !isSticky) {
+        // sticky가 아닐 때만 높이 업데이트 (원래 높이 저장)
+        setHeaderHeight(headerRef.current.offsetHeight);
+      }
+    };
+
+    // 초기 측정
+    updateHeaderHeight();
+
+    // ResizeObserver로 헤더 크기 변화 감지
+    const resizeObserver = new ResizeObserver(updateHeaderHeight);
+    if (headerRef.current) {
+      resizeObserver.observe(headerRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [isSticky]);
+
+  // 6. Intersection Observer로 sticky 상태 감지
   useEffect(() => {
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
@@ -94,17 +119,15 @@ export default function MainPage() {
       <div
         ref={headerRef}
         className={cn(
-          "transition-all duration-300",
+          "transition-all duration-300 bg-white",
           isSticky
-            ? "fixed top-0 left-0 right-0 z-50 bg-white px-12 sm:px-16 md:px-24 lg:px-32"
-            : "relative z-50 bg-white"
+            ? "fixed top-0 left-0 right-0 z-50 px-12 sm:px-16 md:px-24 lg:px-32"
+            : "relative z-50 mx-[-16px] sm:mx-[-24px] md:mx-[-32px] lg:mx-[-48px] px-4 sm:px-6 md:px-8 lg:px-12"
         )}
         style={{
           marginTop: isSticky ? "0px" : "100px",
           paddingTop: isSticky ? "16px" : "20px",
           paddingBottom: isSticky ? "16px" : "20px",
-          paddingLeft: isSticky ? undefined : "20px",
-          paddingRight: isSticky ? undefined : "20px",
           boxShadow: isSticky ? "0 4px 6px 0 rgba(0, 0, 0, 0.1)" : "none",
         }}
       >
@@ -123,9 +146,7 @@ export default function MainPage() {
       </div>
 
       {/* Placeholder when header is fixed */}
-      {isSticky && headerRef.current && (
-        <div style={{ height: `${headerRef.current.offsetHeight}px` }} />
-      )}
+      {isSticky && <div style={{ height: `${headerHeight + 100}px` }} />}
 
       {/* ContentToggle */}
       <div style={{ marginTop: "50px" }}>
@@ -148,7 +169,7 @@ export default function MainPage() {
       {selectedStudio && (
         <div
           ref={calendarSectionRef} // ⭐ 스크롤 목적지
-          className="mt-5 pt-5 pb-25 mb-5 border-t border-gray-200 animate-in fade-in slide-in-from-bottom-4 duration-500"
+          className="mt-5 pt-5 pb-50 mb-5 border-t border-gray-200 animate-in fade-in slide-in-from-bottom-4 duration-500"
         >
           <Calendar
             entity={selectedStudio}
