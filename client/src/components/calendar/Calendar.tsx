@@ -211,6 +211,7 @@ export default function Calendar<T extends Studio | Dancer>({
         selectedDate={selectedDate}
         classes={selectedDateClasses}
         onClose={() => setShowBottomSheet(false)}
+        entityType={entityType}
       />
     </div>
   );

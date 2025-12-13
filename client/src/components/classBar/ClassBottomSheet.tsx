@@ -8,6 +8,7 @@ interface ClassBottomSheetProps {
   selectedDate: Date | null;
   classes: ClassSchedule[];
   onClose: () => void;
+  entityType: "studio" | "dancer";
 }
 
 /**
@@ -19,6 +20,7 @@ export default function ClassBottomSheet({
   selectedDate,
   classes,
   onClose,
+  entityType,
 }: ClassBottomSheetProps) {
   const [dragStart, setDragStart] = useState<number | null>(null);
   const [dragOffset, setDragOffset] = useState(0);
@@ -139,6 +141,7 @@ export default function ClassBottomSheet({
                 <ClassCard
                   key={classSchedule.class_id}
                   classSchedule={classSchedule}
+                  entityType={entityType}
                 />
               ))}
             </div>
