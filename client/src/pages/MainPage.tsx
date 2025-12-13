@@ -7,7 +7,8 @@ import {
   StudioMapView,
 } from "@/components/main";
 import { Calendar } from "@/components/calendar";
-import { mockStudios, mockClasses } from "@/data";
+import { useStudioList } from "@/hooks/useStudio";
+import { useStudioClasses } from "@/hooks/useClasses";
 import type { ViewMode, Studio } from "@/types";
 
 /**
@@ -27,6 +28,10 @@ export default function MainPage() {
   const calendarSectionRef = useRef<HTMLDivElement>(null);
   // 7. 헤더 ref
   const headerRef = useRef<HTMLDivElement>(null);
+
+  // API 데이터 가져오기
+  const { data: studios = [], isLoading: studiosLoading } = useStudioList();
+  const { data: classes = [] } = useStudioClasses(selectedStudio?.studio_id || "");
 
   // 8. 헤더 높이 측정
   useEffect(() => {
@@ -161,13 +166,17 @@ export default function MainPage() {
 
       {/* Content Area */}
       <div className="mt-3">
-        {viewMode === "card" ? (
+        {studiosLoading ? (
+          <div className="flex justify-center items-center h-64">
+            <p className="text-gray-500">로딩 중...</p>
+          </div>
+        ) : viewMode === "card" ? (
           <StudioCardGrid
-            studios={mockStudios}
+            studios={studios}
             onStudioClick={handleStudioClick}
           />
         ) : (
-          <StudioMapView studios={mockStudios} onPinClick={handleStudioClick} />
+          <StudioMapView studios={studios} onPinClick={handleStudioClick} />
         )}
       </div>
 
@@ -182,7 +191,7 @@ export default function MainPage() {
               <Calendar
                 entity={selectedStudio}
                 entityType="studio"
-                classes={mockClasses}
+                classes={classes}
               />
             </div>
           </div>

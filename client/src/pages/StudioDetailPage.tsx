@@ -1,7 +1,8 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Calendar } from "@/components/calendar";
 import { Logo, SearchBar } from "@/components/common";
-import { mockStudios, mockClasses } from "@/data";
+import { useStudio } from "@/hooks/useStudio";
+import { useStudioClasses } from "@/hooks/useClasses";
 import ArrowLeftIcon from "@/assets/icons/arrow_left.svg";
 
 /**
@@ -11,7 +12,16 @@ import ArrowLeftIcon from "@/assets/icons/arrow_left.svg";
 export default function StudioDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const studio = mockStudios.find((s) => s.studio_id === id);
+  const { data: studio, isLoading: studioLoading } = useStudio(id || "");
+  const { data: classes = [] } = useStudioClasses(id || "");
+
+  if (studioLoading) {
+    return (
+      <div className="px-4 py-8 flex justify-center items-center h-64">
+        <p className="text-gray-500">로딩 중...</p>
+      </div>
+    );
+  }
 
   if (!studio) {
     return (
@@ -64,7 +74,7 @@ export default function StudioDetailPage() {
 
       {/* 캘린더 */}
       <div className="px-4 py-8">
-        <Calendar entity={studio} entityType="studio" classes={mockClasses} />
+        <Calendar entity={studio} entityType="studio" classes={classes} />
       </div>
     </div>
   );

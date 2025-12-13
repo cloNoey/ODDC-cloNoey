@@ -1,7 +1,8 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Calendar } from "@/components/calendar";
 import { Logo, SearchBar } from "@/components/common";
-import { mockDancers, mockClasses } from "@/data";
+import { useDancer } from "@/hooks/useDancer";
+import { useDancerClasses } from "@/hooks/useClasses";
 import ArrowLeftIcon from "@/assets/icons/arrow_left.svg";
 
 /**
@@ -11,7 +12,16 @@ import ArrowLeftIcon from "@/assets/icons/arrow_left.svg";
 export default function DancerDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const dancer = mockDancers.find((d) => d.dancer_id === id);
+  const { data: dancer, isLoading: dancerLoading } = useDancer(id || "");
+  const { data: classes = [] } = useDancerClasses(id || "");
+
+  if (dancerLoading) {
+    return (
+      <div className="px-4 py-8 flex justify-center items-center h-64">
+        <p className="text-gray-500">로딩 중...</p>
+      </div>
+    );
+  }
 
   if (!dancer) {
     return (
@@ -64,7 +74,7 @@ export default function DancerDetailPage() {
 
       {/* 캘린더 */}
       <div className="px-4 py-8">
-        <Calendar entity={dancer} entityType="dancer" classes={mockClasses} />
+        <Calendar entity={dancer} entityType="dancer" classes={classes} />
       </div>
     </div>
   );
