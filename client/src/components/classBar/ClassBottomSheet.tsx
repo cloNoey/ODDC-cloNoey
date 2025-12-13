@@ -99,7 +99,6 @@ export default function ClassBottomSheet({
           isOpen ? "translate-y-0" : "translate-y-full"
         )}
         style={{
-          maxHeight: "85vh",
           boxShadow: "0 -4px 12px 0 rgba(0, 0, 0, 0.15)",
           transform: dragOffset > 0 ? `translateY(${dragOffset}px)` : undefined,
         }}
@@ -130,9 +129,9 @@ export default function ClassBottomSheet({
         </div>
 
         {/* 바디: 수업 카드 horizontal scroll */}
-        <div className="px-4 py-5 overflow-y-auto" style={{ height: "25vh" }}>
+        <div className="px-4 py-5">
           {classes.length === 0 ? (
-            <div className="flex items-center justify-center h-full text-gray-500">
+            <div className="flex items-center justify-center text-gray-500" style={{ height: "180px" }}>
               수업이 없습니다
             </div>
           ) : (
