@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Logo } from "@/components/common";
 import {
   SearchInput,
@@ -47,10 +47,12 @@ export default function SearchPage() {
   return (
     <div className="relative min-h-screen flex flex-col">
       {/* 상단 고정 영역 */}
-      <div className="sticky top-0 bg-white z-10 mx-8 pt-8 pb-4 border-b border-gray-100">
+      <div className="sticky top-0 bg-white z-10 mx-10 pt-8 pb-4 border-b border-gray-100">
         {/* Logo - 좌측 정렬 */}
-        <div className="mb-4 ml-2">
-          <Logo className="justify-start" />
+        <div className="mb-3 ml-2">
+          <Link to="/">
+            <Logo className="justify-start h-6" />
+          </Link>
         </div>
 
         {/* SearchInput */}

@@ -94,7 +94,7 @@ export default function CalendarNavigator({
             )}
             aria-label="이전 달"
           >
-            <img src={arrowLeft} alt="이전 달" className="w-[8px] h-[14px]" />
+            <img src={arrowLeft} alt="이전 달" className="w-[8px] h-[12px]" />
           </button>
 
           <span
@@ -118,7 +118,7 @@ export default function CalendarNavigator({
             )}
             aria-label="다음 달"
           >
-            <img src={arrowRight} alt="다음 달" className="w-[8px] h-[14px]" />
+            <img src={arrowRight} alt="다음 달" className="w-[8px] h-[12px]" />
           </button>
         </div>
       </div>

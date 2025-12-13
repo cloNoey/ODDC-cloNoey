@@ -30,29 +30,34 @@ export default function DancerDetailPage() {
     <div className="min-h-screen">
       {/* 상단바 (정적) */}
       <div
-        className="bg-white px-12 sm:px-16 md:px-24 lg:px-32 py-5"
-        style={{ boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.1)" }}
+        className="bg-white"
+        style={{
+          paddingTop: "32px",
+        }}
       >
         {/* 로고 - 메인페이지로 이동 */}
         <Link to="/">
-          <Logo />
+          <Logo className="h-6" />
         </Link>
 
         {/* 검색바 영역 */}
-        <div className="mt-3 flex items-center justify-center gap-3">
+        <div
+          className="flex items-center justify-center gap-3 mx-10"
+          style={{ marginTop: "12px" }}
+        >
           {/* 왼쪽 뒤로가기 버튼 */}
           <button
             onClick={() => navigate("/search")}
             className="hover:opacity-70 transition-opacity flex-shrink-0"
             aria-label="검색 페이지로 이동"
           >
-            <img src={ArrowLeftIcon} alt="뒤로가기" className="w-6 h-6" />
+            <img src={ArrowLeftIcon} alt="뒤로가기" className="w-4 h-4" />
           </button>
 
           {/* 검색바 */}
           <SearchBar
             placeholder="어떤 댄서의 일정을 찾으시나요?"
-            className="w-full max-w-[320px] sm:max-w-[400px] md:max-w-[500px]"
+            className="w-full w-[320px]"
           />
         </div>
       </div>

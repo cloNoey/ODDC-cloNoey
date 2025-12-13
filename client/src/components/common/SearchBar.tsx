@@ -26,7 +26,7 @@ export default function SearchBar({
     <button
       onClick={handleClick}
       className={cn(
-        "h-[40px] sm:h-[44px] md:h-[48px] rounded-[20px] sm:rounded-[22px] md:rounded-[24px]",
+        "h-[40px] rounded-[20px]",
         "flex items-center justify-center",
         "relative cursor-pointer",
         className
@@ -36,14 +36,14 @@ export default function SearchBar({
     >
       {/* 중앙 텍스트 */}
       <span
-        className="absolute left-1/2 transform -translate-x-1/2 text-xs sm:text-sm md:text-base"
+        className="absolute left-1/2 transform -translate-x-1/2 text-[12px]"
         style={{ color: "var(--color-primary)" }}
       >
         {placeholder}
       </span>
 
       {/* 우측 검색 아이콘 */}
-      <div className="absolute right-3 sm:right-4 w-[20px] h-[20px] sm:w-[22px] sm:h-[22px] md:w-[24px] md:h-[24px] flex items-center justify-center">
+      <div className="absolute right-4 sm:right-4 w-[20px] h-[20px] flex items-center justify-center">
         <img src={searchIcon} alt="검색" className="w-full h-full" />
       </div>
     </button>

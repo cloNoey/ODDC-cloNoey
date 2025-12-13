@@ -32,7 +32,7 @@ export default function SearchInput({
       {/* 1. 뒤로가기 버튼 (검색바 좌측 외부 배치) */}
       <button
         onClick={handleBackClick}
-        className="w-[20px] h-[20px] flex-shrink-0 flex items-center justify-center cursor-pointer hover:opacity-70 transition-opacity"
+        className="w-4 h-4 flex-shrink-0 flex items-center justify-center cursor-pointer hover:opacity-70 transition-opacity"
         aria-label="메인 페이지로 돌아가기"
       >
         <img src={arrowLeftIcon} alt="뒤로가기" className="w-full h-full" />
