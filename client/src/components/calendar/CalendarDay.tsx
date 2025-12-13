@@ -102,7 +102,7 @@ export default function CalendarDay({
       {/* 클래스 있을 때 점 표시 - 오른쪽 위 */}
       {hasClasses && (
         <div
-          className="absolute top-3 right-3 w-1 h-1 rounded-full"
+          className="absolute top-2 right-2 w-1 h-1 rounded-full"
           style={{ backgroundColor: "var(--color-primary)" }}
         />
       )}

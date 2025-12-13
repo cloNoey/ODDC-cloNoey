@@ -12,6 +12,7 @@ import CalendarHeader from "./CalendarHeader";
 import CalendarNavigator from "./CalendarNavigator";
 import CalendarGrid from "./CalendarGrid";
 import DisplayOptionsModal from "./DisplayOptionsModal";
+import { ClassBottomSheet } from "@/components/classBar";
 
 interface CalendarProps<T extends Studio | Dancer> {
   entity: T;
@@ -19,6 +20,16 @@ interface CalendarProps<T extends Studio | Dancer> {
   classes: ClassSchedule[];
   onDateClick?: (date: Date, classes: ClassSchedule[]) => void;
   className?: string;
+}
+
+/**
+ * Date → "2025-12-15" 변환
+ */
+function formatDateISO(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 /**
@@ -37,6 +48,7 @@ export default function Calendar<T extends Studio | Dancer>({
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [filters, setFilters] = useState<CalendarFilters>(INITIAL_FILTERS);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
 
   // 해당 엔티티의 클래스만 필터링
   const entityClasses = useMemo(() => {
@@ -104,6 +116,13 @@ export default function Calendar<T extends Studio | Dancer>({
     return Array.from(dancerMap.values());
   }, [entityClasses, entityType]);
 
+  // 선택된 날짜의 클래스만 필터링
+  const selectedDateClasses = useMemo(() => {
+    if (!selectedDate) return [];
+    const dateString = formatDateISO(selectedDate);
+    return filteredClasses.filter((cls) => cls.class_date === dateString);
+  }, [selectedDate, filteredClasses]);
+
   // 이벤트 핸들러
   const handleMonthChange = (delta: number) => {
     setCurrentMonth((prev) => {
@@ -130,7 +149,20 @@ export default function Calendar<T extends Studio | Dancer>({
   };
 
   const handleDateClick = (date: Date, dayClasses: ClassSchedule[]) => {
-    setSelectedDate(date);
+    // 같은 날짜를 다시 클릭하면 bottom sheet 토글
+    if (
+      selectedDate &&
+      selectedDate.getFullYear() === date.getFullYear() &&
+      selectedDate.getMonth() === date.getMonth() &&
+      selectedDate.getDate() === date.getDate()
+    ) {
+      setShowBottomSheet((prev) => !prev);
+    } else {
+      // 다른 날짜를 클릭하면 선택 변경 + bottom sheet 표시
+      setSelectedDate(date);
+      setShowBottomSheet(true);
+    }
+
     onDateClick?.(date, dayClasses);
   };
 
@@ -171,6 +203,14 @@ export default function Calendar<T extends Studio | Dancer>({
         onFilterChange={handleFilterChange}
         entityType={entityType}
         availableDancers={availableDancers}
+      />
+
+      {/* 수업 세부내용 하단바 */}
+      <ClassBottomSheet
+        isOpen={showBottomSheet}
+        selectedDate={selectedDate}
+        classes={selectedDateClasses}
+        onClose={() => setShowBottomSheet(false)}
       />
     </div>
   );
