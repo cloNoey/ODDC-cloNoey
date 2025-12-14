@@ -13,6 +13,8 @@ class StudioListItem(BaseModel):
     city: Optional[str]
     district: Optional[str]
     is_verified: bool
+    lat: Optional[float]  # 지도 표시용
+    lng: Optional[float]  # 지도 표시용
 
     @staticmethod
     def from_studio(studio: Studio) -> "StudioListItem":
@@ -23,7 +25,9 @@ class StudioListItem(BaseModel):
             station=studio.station,
             city=studio.city,
             district=studio.district,
-            is_verified=studio.is_verified
+            is_verified=studio.is_verified,
+            lat=float(studio.lat) if studio.lat is not None else None,
+            lng=float(studio.lng) if studio.lng is not None else None
         )
 
 
