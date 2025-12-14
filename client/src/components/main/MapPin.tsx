@@ -17,19 +17,14 @@ export default function MapPin({ studio, onClick, className }: MapPinProps) {
   };
 
   if (!studio.coordinates) {
-    console.log(`[MapPin] ${studio.name}: coordinates 없음`);
     return null;
   }
 
   // 좌표를 %로 변환 (지도 이미지 기준)
   const style = {
     left: `${studio.coordinates.x}%`,
-    top: `calc(${studio.coordinates.y}% + 10px)`,
+    top: `calc(${studio.coordinates.y}% + 20px)`,
   };
-
-  console.log(
-    `[MapPin 렌더링] ${studio.name} - x: ${studio.coordinates.x.toFixed(1)}%, y: ${studio.coordinates.y.toFixed(1)}%`
-  );
 
   return (
     <div

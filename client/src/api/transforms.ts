@@ -40,8 +40,6 @@ function convertLatLngToPercent(lat: number, lng: number): { x: number; y: numbe
   // 위도는 북쪽이 큰 값이므로 반전 필요
   const y = ((MAP_BOUNDS.lat.max - lat) / (MAP_BOUNDS.lat.max - MAP_BOUNDS.lat.min)) * 100;
 
-  console.log(`[좌표 변환] lat: ${lat}, lng: ${lng} → x: ${x.toFixed(1)}%, y: ${y.toFixed(1)}%`);
-
   return { x, y };
 }
 
