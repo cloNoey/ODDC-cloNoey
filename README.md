@@ -59,11 +59,13 @@
 
 ---
 
-# Videos - with NotebookLM
+# Videos
 
-## 기획 상세
+## 기획 상세 (created by, NotebookLM)
+https://github.com/user-attachments/assets/f534511c-7288-40b9-898d-f5763dcfc933
 
 ## MVP 구현 사항
+
 
 ## 기획 보드 - FigJam
 
