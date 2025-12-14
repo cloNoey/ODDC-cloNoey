@@ -151,5 +151,6 @@ class ClassStore:
                 class_obj = class_in_session
 
             SESSION.delete(class_obj)
+            await SESSION.flush()  # Ensure deletion is processed
         except Exception as e:
             raise class_delete_error(e)
