@@ -15,7 +15,7 @@ class SearchService:
 
         return SearchResponse(
             results=[
-                SearchResultItem(id=id, name=name, type=type)
-                for id, name, type in results
+                SearchResultItem(id=id, name=name, type=type, instagram=instagram)
+                for id, name, type, instagram in results
             ]
         )

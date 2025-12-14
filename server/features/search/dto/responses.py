@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 
 class SearchResultItem(BaseModel):
@@ -7,6 +7,7 @@ class SearchResultItem(BaseModel):
     id: str
     name: str
     type: str  # "DANCER" or "STUDIO"
+    instagram: Optional[str] = None
 
 
 class SearchResponse(BaseModel):
