@@ -139,7 +139,6 @@ class ClassStore:
         except Exception as e:
             raise class_edit_error(e)
 
-    @transactional
     async def delete_class(self, class_obj: Class) -> None:
         """수업 삭제"""
         try:
