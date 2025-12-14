@@ -23,6 +23,27 @@ export function transformClassResponse(backendClass: any): ClassSchedule {
 }
 
 /**
+ * 위경도를 지도 이미지 상의 % 좌표로 변환
+ * 서울 지도 이미지가 커버하는 범위 기준
+ */
+function convertLatLngToPercent(lat: number, lng: number): { x: number; y: number } {
+  // 서울 지도 이미지의 위경도 범위
+  const MAP_BOUNDS = {
+    lat: { min: 37.4, max: 37.7 },  // 남 ~ 북
+    lng: { min: 126.8, max: 127.2 }, // 서 ~ 동
+  };
+
+  // 경도 → x% (왼쪽 0% ~ 오른쪽 100%)
+  const x = ((lng - MAP_BOUNDS.lng.min) / (MAP_BOUNDS.lng.max - MAP_BOUNDS.lng.min)) * 100;
+
+  // 위도 → y% (위쪽 0% ~ 아래쪽 100%)
+  // 위도는 북쪽이 큰 값이므로 반전 필요
+  const y = ((MAP_BOUNDS.lat.max - lat) / (MAP_BOUNDS.lat.max - MAP_BOUNDS.lat.min)) * 100;
+
+  return { x, y };
+}
+
+/**
  * 백엔드 StudioResponse → 프론트 Studio
  * 백엔드: lat, lng, station, city, district
  * 프론트: coordinates {x, y}, nearby_station
@@ -43,10 +64,7 @@ export function transformStudioResponse(backendStudio: any): Studio {
     default_duration: backendStudio.default_duration,
     default_price: backendStudio.default_price,
     coordinates: backendStudio.lat && backendStudio.lng
-      ? {
-          x: backendStudio.lng,
-          y: backendStudio.lat,
-        }
+      ? convertLatLngToPercent(backendStudio.lat, backendStudio.lng)
       : undefined,
     nearby_station: backendStudio.station,
   };
