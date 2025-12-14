@@ -192,12 +192,21 @@ class DancerStore:
                         if name not in existing_dancer.names:
                             existing_dancer.names = existing_dancer.names + [name]
                     else:
-                        # DB에서 조회
+                        # DB에서 instagram으로 조회
                         existing_dancer = await SESSION.scalar(
                             select(Dancer).where(Dancer.instagram == instagram)
                         )
+
+                        # TEMPORARY: instagram으로 못 찾으면 이름으로도 검색
+                        if not existing_dancer:
+                            existing_dancer = await SESSION.scalar(
+                                select(Dancer).where(Dancer.main_name == name)
+                            )
+
                         if existing_dancer:
-                            # 기존 댄서에 이름 추가
+                            # 기존 댄서 업데이트: instagram 추가 및 이름 추가
+                            if existing_dancer.instagram is None:
+                                existing_dancer.instagram = instagram
                             if name not in existing_dancer.names:
                                 existing_dancer.names = existing_dancer.names + [name]
                             processed_instagrams[instagram] = existing_dancer
