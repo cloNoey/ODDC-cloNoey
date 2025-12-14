@@ -24,10 +24,12 @@ export default function MapPin({ studio, onClick, className }: MapPinProps) {
   // 좌표를 %로 변환 (지도 이미지 기준)
   const style = {
     left: `${studio.coordinates.x}%`,
-    top: `${studio.coordinates.y}%`,
+    top: `calc(${studio.coordinates.y}% + 10px)`,
   };
 
-  console.log(`[MapPin 렌더링] ${studio.name} - x: ${studio.coordinates.x.toFixed(1)}%, y: ${studio.coordinates.y.toFixed(1)}%`);
+  console.log(
+    `[MapPin 렌더링] ${studio.name} - x: ${studio.coordinates.x.toFixed(1)}%, y: ${studio.coordinates.y.toFixed(1)}%`
+  );
 
   return (
     <div
@@ -42,7 +44,7 @@ export default function MapPin({ studio, onClick, className }: MapPinProps) {
       {/* 핀 이미지 */}
       <div className="relative">
         {/* 핀 아이콘 - 추후 실제 핀 이미지로 교체 */}
-        <div className="w-8 h-8 text-2xl bg-red-500 rounded-full flex items-center justify-center">📍</div>
+        <div className="text-xl">📍</div>
 
         {/* 스튜디오 이름 카드 */}
         <div
