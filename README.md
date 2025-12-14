@@ -1,6 +1,7 @@
 # 💃 ODDC : One Day Dance Class
 
-| "흩어진 댄스 씬의 정보를 하나의 DB로 연결하다."
+> "흩어진 댄스 씬의 정보를 하나의 DB로 연결하다."
+
 : 인스타그램 속 비정형 데이터(이미지, 텍스트)를 정형 데이터로 구조화하여, 댄서와 수강생의 탐색 비용을 혁신적으로 줄여주는 댄스 정보 통합 플랫폼입니다.
 
 ## 프로젝트 배경 (Background & Problem)
@@ -45,12 +46,12 @@
 
 ### ✅ 간편 신청 프로세스 (Application)
 
-- 원클릭 연결: 복잡한 구글폼 입력 없이 '사전신청 링크' 버튼 하나로 연결.
+- 원클릭 연결: '사전신청 링크' 버튼 하나로 스튜디오 예약 구글폼으로 리다이렉트.
 - 현장 결제/예약 상태 확인: 수업의 마감 여부 및 결제 방식(현장/사전)을 명확히 표기.
 
 ## 기술적 접근 및 해결 전략 (Technical Strategy)
+> "사용자의 뇌가 처리하던 비정형 데이터를 시스템이 처리하도록 변경"
 
-| "사용자의 뇌가 처리하던 비정형 데이터를 시스템이 처리하도록 변경"
 : 이 프로젝트는 단순히 정보를 보여주는 것을 넘어, 사용자 경험(UX)의 단계를 획기적으로 줄이는 데에 기술적 초점을 맞췄습니다.
 
 - **데이터 구조화**: 댄서명, 장르, 난이도, 시간, 장소 등을 속성(Attribute)별로 DB화하여 쿼리 성능 최적화.
@@ -60,13 +61,14 @@
 ---
 
 # Videos
+## 기획 요약 및 MVP 구현 사항 (NotebookLM 2분 + Demo 1분)
+https://github.com/user-attachments/assets/43863074-60c1-420e-b5ab-b2ee22cd863c
+
 
 ## 기획 상세 (created by, NotebookLM)
 https://github.com/user-attachments/assets/f534511c-7288-40b9-898d-f5763dcfc933
 
-## MVP 구현 사항
-
-
+---
 ## 기획 보드 - FigJam
 
 https://www.figma.com/board/0Bq3BpTmPUrLPhSh4kJWqg/ODDC_NAVER?node-id=0-1&t=Q0OY9hKJQGysWOa3-1
@@ -90,7 +92,7 @@ https://www.figma.com/design/W5U425M3b6sDZGUxp9g5rW/ODDC_MVP?node-id=0-1&t=SoTGh
 - **Validation:** Pydantic
 - **Database:** MySQL (AWS RDS Free Tier)
 - **ORM:** SQLAlchemy 2.0 (Async)
-- **Deployment:** Nginx
+- **Deployment:** AWS EC2, Nginx (Reverse Proxy, SSL/TLS Termination), Systemd, Vercel
 
 ### Data Pipeline (AI Automation)
 
@@ -99,8 +101,3 @@ https://www.figma.com/design/W5U425M3b6sDZGUxp9g5rW/ODDC_MVP?node-id=0-1&t=SoTGh
   - _Role:_ 인스타그램 이미지(스케줄표, 공지)에서 텍스트 구조화 추출. + 인간 검수
 - **Flow:** Image Upload (Admin) -> n8n Webhook -> Gemini Processing -> DB Insert
   => n8n 자동화 시스템에서의 접근이 불편 -> 제미나이에 직접 연결해서 구글 스프레드시트에 1차 가공 진행
-
-### Infrastructure & DevOps
-
-- **Cloud:** AWS EC2 (t3.small), AWS RDS
-- **CI/CD:** GitHub Actions (Auto Build/Deploy)
