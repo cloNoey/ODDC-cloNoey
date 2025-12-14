@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import type { ClassSchedule } from "@/types";
 import ClassCard from "./ClassCard";
@@ -37,6 +37,13 @@ export default function ClassBottomSheet({
       document.body.style.overflow = "";
     };
   }, [isOpen]);
+
+  // 수업을 시간순으로 정렬 (이른 시간이 먼저)
+  const sortedClasses = useMemo(() => {
+    return [...classes].sort((a, b) => {
+      return a.start_time.localeCompare(b.start_time);
+    });
+  }, [classes]);
 
   // 날짜 포맷팅
   const formattedDate = selectedDate
@@ -130,13 +137,13 @@ export default function ClassBottomSheet({
 
         {/* 바디: 수업 카드 horizontal scroll */}
         <div className="px-4 py-5">
-          {classes.length === 0 ? (
+          {sortedClasses.length === 0 ? (
             <div className="flex items-center justify-center text-gray-500" style={{ height: "180px" }}>
               수업이 없습니다
             </div>
           ) : (
             <div className="flex gap-3 overflow-x-auto pb-4">
-              {classes.map((classSchedule) => (
+              {sortedClasses.map((classSchedule) => (
                 <ClassCard
                   key={classSchedule.class_id}
                   classSchedule={classSchedule}
