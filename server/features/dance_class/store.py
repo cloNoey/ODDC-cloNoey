@@ -139,6 +139,7 @@ class ClassStore:
         except Exception as e:
             raise class_edit_error(e)
 
+    @transactional
     async def delete_class(self, class_obj: Class) -> None:
         """수업 삭제"""
         try:
@@ -151,7 +152,5 @@ class ClassStore:
 
             SESSION.delete(class_obj)
             await SESSION.flush()  # Ensure deletion is processed
-            await SESSION.commit()  # Explicitly commit the transaction
         except Exception as e:
-            await SESSION.rollback()
             raise class_delete_error(e)
