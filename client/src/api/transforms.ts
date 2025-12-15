@@ -1,4 +1,4 @@
-import type { Studio, Dancer, ClassSchedule, ClassDancer, ClassStudio } from '@/types';
+import type { Studio, Dancer, ClassSchedule, ClassDancer } from '@/types';
 
 /**
  * 백엔드 ClassDetailResponse → 프론트 ClassSchedule
